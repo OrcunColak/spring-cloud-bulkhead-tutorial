@@ -21,7 +21,9 @@ public class HelloWorldController {
     // The @Bulkhead annotation allows you to control the number of concurrent calls to a particular method or service.
     // If the limit is exceeded, the remaining calls will either be rejected immediately or queued (depending on the configuration).
     @GetMapping
-    @Bulkhead(name = "bulkhead", fallbackMethod = "fallback")
+
+    // The @Bulkhead annotation with Bulkhead.Type.THREADPOOL creates a separate thread pool for the showHelloWorld method, isolating it from other services.
+    @Bulkhead(name = "bulkhead", fallbackMethod = "fallback" , type = Bulkhead.Type.THREADPOOL)
     public ResponseEntity<String> showHelloWorld() {
         return new ResponseEntity<>("bulkhead",HttpStatus.OK);
     }
